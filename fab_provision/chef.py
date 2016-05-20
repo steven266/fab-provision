@@ -1,4 +1,4 @@
-from fabric.api import run, sudo, env, cd, put
+from fabric.api import run, sudo, env, cd, put, settings
 from os.path import isdir
 from helpers import get_home_dir
 
@@ -12,7 +12,9 @@ def install_chef():
 
     # check if chef is already installed
     chef_version = '0.12.0-1'
-    version = run("dpkg-query --showformat='${Version}' --show chefdk")
+    version = None
+    with settings(warn_only=True):
+        version = run("dpkg-query --showformat='${Version}' --show chefdk")
     if version == chef_version:
         print "Skip: ChefDK is already installed!"
         return
