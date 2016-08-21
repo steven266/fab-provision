@@ -10,24 +10,16 @@ def install_chef():
     :return: nothing
     """
 
-    # check if chef is already installed
-    chef_version = '0.12.0-1'
-    version = None
-    with settings(warn_only=True):
-        version = run("dpkg-query --showformat='${Version}' --show chefdk")
-    if version == chef_version:
-        print "Skip: ChefDK is already installed!"
-        return
+    if env.chef_dk == 'current':
+        run('curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -c current -P chefdk')
+    else:
+        with settings(warn_only=True):
+            version = run("dpkg-query --showformat='${Version}' --show chefdk")
+            if version == env.chef_dk:
+                print "Skip: ChefDK is already installed!"
+                return
 
-    # TODO: add OS switch
-    # Download package
-    run('wget -O %s %s' % (env.chef_installer, env.chef_url))
-
-    # Install package
-    sudo('dpkg -i %s' % env.chef_installer)
-
-    # Cleanup
-    run('rm -f %s' % env.chef_installer)
+        run('curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -v %s -P chefdk' % env.chef_dk)
 
 
 def run_berkshelf():
@@ -62,6 +54,7 @@ def put_cookbooks():
     path = get_home_dir()
     if isdir('projects/%s/cookbooks' % env.project):
         put('projects/%s/cookbooks' % env.project, '%s/chef' % path)
+
 
 def put_data_bags():
     """

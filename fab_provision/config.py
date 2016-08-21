@@ -14,11 +14,11 @@ def load_config(project, stage):
     :return: nothing
     """
 
-    # TODO: load chef version set in config
     env.colorize_errors = True
     env.shell = "/bin/bash -l -i -c"
-    env.chef_installer = "chefdk_0.12.0-1_amd64.deb"
-    env.chef_url = 'https://packages.chef.io/stable/ubuntu/12.04/chefdk_0.12.0-1_amd64.deb'
+
+    if 'chef_dk' not in env:
+        env.chef_dk = 'current'
 
     env.project = project
     env.stage = stage
