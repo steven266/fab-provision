@@ -62,3 +62,13 @@ def put_cookbooks():
     path = get_home_dir()
     if isdir('projects/%s/cookbooks' % env.project):
         put('projects/%s/cookbooks' % env.project, '%s/chef' % path)
+
+def put_data_bags():
+    """
+    Upload project specific data bags - if available
+
+    :return: nothing
+    """
+    path = get_home_dir()
+    if isdir('projects/%s/data_bags' % env.project):
+        put('projects/%s/data_bags' % env.project, '%s/chef' % path)
