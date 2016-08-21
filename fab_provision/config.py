@@ -20,6 +20,9 @@ def load_config(project, stage):
     if 'chef_dk' not in env:
         env.chef_dk = 'current'
 
+    if 'install_git' not in env:
+        env.install_git = False
+
     env.project = project
     env.stage = stage
 
@@ -40,7 +43,7 @@ def load_config(project, stage):
     try:
         env.nodejson_mapping['PROJECT'] = project
         env.nodejson_mapping['STAGE'] = stage
-    except AttributeError:
+    except TypeError:
         env.nodejson_mapping = {
             'PROJECT': project,
             'STAGE': stage

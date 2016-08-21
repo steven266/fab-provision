@@ -5,6 +5,7 @@
 - Added data bags
 - Added new ChefDK installation method
 - Added new config `chef_dk` - set ChefDK version or `current`
+- Added config `install_git`, e.g. for installing cookbooks from git
 
 ## [0.0.2] - 2016-05-20
 ### Fixed
