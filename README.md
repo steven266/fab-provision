@@ -53,6 +53,11 @@ stage2:
     KEY: value
 ```
 
+Use local cookbooks from project specific cookbook-path, Berksfile:
+
+```
+cookbook 'my_cookbook', path: '$cookbook_path/my_cookbook'
+```
 
 ## Contribution and License
 

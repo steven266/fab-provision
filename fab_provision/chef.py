@@ -53,7 +53,7 @@ def put_cookbooks():
     """
     path = get_home_dir()
     if isdir('projects/%s/cookbooks' % env.project):
-        put('projects/%s/cookbooks' % env.project, '%s/chef' % path)
+        put('projects/%s/cookbooks/*' % env.project, '%s/chef/local_cookbooks' % path)
 
 
 def put_data_bags():

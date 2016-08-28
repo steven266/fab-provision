@@ -76,12 +76,29 @@ def put_config():
     env.nodejson_mapping['HOME_DIR'] = path
     env.solorb_mapping['HOME_DIR'] = path
 
-    # Upload Berksfile
-    put('projects/%s/Berksfile' % env.project, '%s/chef/Berksfile' % path)
-
-    # Generate and upload node.json and solo.rb
+    # Generate and upload Berksfile, node.json and solo.rb
     # Create temp folder if necessary
     local('mkdir -p temp')
+
+    """
+        Berksfile
+    """
+    run('mkdir %s/chef/local_cookbooks' % path)
+
+    template = ''
+    with open('projects/%s/Berksfile' % env.project, 'r') as config_file:
+        template = Template(config_file.read())
+
+    configuration = template.safe_substitute({
+        'cookbook_path': '%s/chef/local_cookbooks' % path
+    })
+
+    # save configuration in temp folder
+    with open('temp/Berksfile_%s_%s' % (env.project, env.stage), 'w') as config_file:
+        config_file.write(configuration)
+
+    # put configuration
+    put('temp/Berksfile_%s_%s' % (env.project, env.stage), '%s/chef/Berksfile' % path)
 
     """
         node.json
@@ -116,5 +133,6 @@ def put_config():
     put('temp/solo_%s_%s.rb' % (env.project, env.stage), '%s/chef/solo.rb' % path)
 
     # cleanup local files
+    local('rm temp/Berksfile_%s_%s' % (env.project, env.stage))
     local('rm temp/solo_%s_%s.rb' % (env.project, env.stage))
     local('rm temp/node_%s_%s.json' % (env.project, env.stage))
