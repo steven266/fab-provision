@@ -1,6 +1,7 @@
 from fabric.api import env, sudo, local, run, put
 from string import Template
 from yaml import load as yaml_load
+from json import dumps
 
 from helpers import get_home_dir
 
@@ -57,6 +58,11 @@ def load_config(project, stage):
             'PROJECT': project,
             'STAGE': stage
         }
+
+    for option, value in env.nodejson_mapping.items():
+        if type(value) in [dict, list]:
+            value = dumps(value)
+            env.nodejson_mapping[option] = value
 
 
 def put_config():

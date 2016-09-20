@@ -6,6 +6,7 @@
 - Added new ChefDK installation method
 - Added new config `chef_dk` - set ChefDK version or `current`
 - Added config `install_git`, e.g. for installing cookbooks from git
+- Added json conversion of `dict`s and `list`s in YAML `nodejson_mapping`
 
 ### Fixed
 - Fixed dependency issues by sourcing cookbooks from local directory
