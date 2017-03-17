@@ -26,6 +26,7 @@ def load_config(project, stage):
 
     env.project = project
     env.stage = stage
+    env.cache_path = ''
 
     try:
         with open('projects/%s/config.yml' % project, 'r') as ymlfile:
@@ -85,6 +86,9 @@ def put_config():
     # Generate and upload Berksfile, node.json and solo.rb
     # Create temp folder if necessary
     local('mkdir -p temp')
+
+    # Create cache path
+    run('mkdir %s/chef/%s' % (path, env.cache_path))
 
     """
         Berksfile
